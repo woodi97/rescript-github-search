@@ -1,7 +1,7 @@
 {
   "name": "rescript-github-search",
   "reason": { "react-jsx": 3 },
-  "bs-dependencies": ["@rescript/react", "rescript-relay", "bs-fetch"],
+  "bs-dependencies": ["@rescript/react", "rescript-relay", "bs-fetch", "rescript-classnames"],
   "ppx-flags": ["rescript-relay/ppx"],
   "sources": [
     { "dir": "src", "subdirs": true }
@@ -10,5 +10,9 @@
     "module": "commonjs",
     "in-source": true
   },
-  "suffix": ".bs.js"
+  "suffix": ".bs.js",
+  "bsc-flags": [
+    "-open Belt",
+    "-open Cx"
+  ]
 } 
