@@ -15,7 +15,7 @@ let fetchQuery: RescriptRelay.Network.fetchFunctionPromise = (
 ) => {
   open Fetch
   fetchWithInit(
-    Env.apiEnvPoint,
+    Env.apiEndPoint,
     RequestInit.make(
       ~method_=Post,
       ~body=Js.Dict.fromList(list{

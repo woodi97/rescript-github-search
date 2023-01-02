@@ -21,18 +21,11 @@ module View = {
             | Some(desc) => <p> {desc->React.string} </p>
             | None => React.null
             }}
-            <Button
-              className={value.viewerHasStarred ? "bg-green-400" : "bg-gray-300"}
-              size={Button.Small}
-              onClick={e => {
-                e->ReactEvent.Synthetic.preventDefault
-                e->ReactEvent.Synthetic.stopPropagation
-              }}>
-              <span className="flex items-center space-x-2 pointer-events-none">
-                <IconStar width="20" height="20" fill="yellow" />
-                <p> {value.stargazerCount->Int.toString->React.string} </p>
-              </span>
-            </Button>
+            <StarCountUpdateButton
+              id={value.id}
+              viewerHasStarred={value.viewerHasStarred}
+              stargazerCount={value.stargazerCount}
+            />
           </div>
         </a>
       | None => <div> {"something went wrong"->React.string} </div>
