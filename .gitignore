@@ -41,3 +41,4 @@ styles/.tailwind.dev.css
 .env.development
 
 *.mjs
+*.bs.js
