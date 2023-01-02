@@ -23,6 +23,7 @@
     "bs-fetch": "^0.6.2",
     "concurrently": "^7.6.0",
     "next": "12.2.3",
+    "next-images": "^1.8.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-relay": "^14.1.0",
