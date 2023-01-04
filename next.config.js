@@ -1,52 +1,21 @@
-/** @type {import('next').NextConfig} */
-const withPlugins = require("next-compose-plugins");
 const bsconfig = require("./bsconfig.json");
+
+// next 12.2부터  next compose plugins 사용할 경우 
+// wrong config 에러가 발생함(next-compose-plugins가 no longer maintained임)
 const withImages = require("next-images");
 
 const transpileModules = ["rescript"]
-.concat(bsconfig["bs-dependencies"])
-
+  .concat(bsconfig["bs-dependencies"])
 const withTM = require("next-transpile-modules")(transpileModules);
+
 
 const config = {
   pageExtensions: ["jsx", "js"],
-  env: {
-    ENV: process.env.NODE_ENV,
-  },
-  webpack: (config, options) => {
-    const { isServer } = options;
+  reactStrictMode: true,
+  webpack5: true
+}
 
-    if (!isServer) {
-      // We shim fs for things like the blog slugs component
-      // where we need fs access in the server-side part
-      config.resolve.fallback = {
-        fs: false,
-        path: false,
-        process: false,
-      };
-    }
-
-    config.module.rules.push({
-      test: /\.m?js$/,
-      use: options.defaultLoaders.babel,
-      exclude: /node_modules/,
-      type: "javascript/auto",
-      resolve: {
-        fullySpecified: false,
-      },
-    });
-    return config
-  },
-  webpack5: true,
-  reactStrictMode: true
-};
-
-module.exports = withPlugins(
-  [
-    [withTM],
-    [
-      withImages,
-    ]
-  ],
-  config
-);
+module.exports = (_phase, { defaultConfig }) => {
+  const plugins = [withTM, withImages]
+  return plugins.reduce((acc, plugin) => plugin(acc), { ...defaultConfig, ...config })
+}
