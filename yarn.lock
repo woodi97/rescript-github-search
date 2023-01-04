@@ -871,11 +871,6 @@ nanoid@^3.3.4:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.4.tgz#730b67e3cd09e2deacf03c027c81c9d9dbc5e8ab"
   integrity sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==
 
-next-compose-plugins@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/next-compose-plugins/-/next-compose-plugins-2.2.1.tgz#020fc53f275a7e719d62521bef4300fbb6fde5ab"
-  integrity sha512-OjJ+fV15FXO2uQXQagLD4C0abYErBjyjE0I0FHpOEIB8upw0hg1ldFP6cqHTJBH1cZqy96OeR3u1dJ+Ez2D4Bg==
-
 next-images@^1.8.4:
   version "1.8.4"
   resolved "https://registry.yarnpkg.com/next-images/-/next-images-1.8.4.tgz#3b3d4840dae50893fc2a15906266532ec5fa58f0"
@@ -1155,6 +1150,11 @@ rescript-relay@^1.0.4:
   integrity sha512-/LIAMpbOc7gIXkTdj4vcOjhknSsoG+FoEJQDR6286cAXeIRBeRDaZPlyCbuy1/L65XltCTfeYPiEJef9FHa0uA==
   dependencies:
     detect-libc "^2.0.1"
+
+rescript-webapi@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/rescript-webapi/-/rescript-webapi-0.7.0.tgz#f8c61bf7383c82b6fe180ad045e16cb43b6299c0"
+  integrity sha512-fA1LPXSmQY3HtcIStQ2sHu9Xye1XLxd4JvkGQMupux9Q6Tp/jbcdh7bnCaGwHW6aI1QFmTmA/xWxUMb6oPphsQ==
 
 rescript@^9.1.4:
   version "9.1.4"

@@ -1,23 +1,14 @@
 // 숙제: fragment를 컴포넌트 단위로 좀 더 나눠보기
 
 module Fragment = %relay(`
-  fragment Repositories_Fragment on Query
-  @refetchable(queryName: "Refetch_Repositories_Fragment_Query")
+  fragment RepositoriesView_Fragment on Query
+  @refetchable(queryName: "Refetch_RepositoriesView_Fragment_Query")
   @argumentDefinitions(first: { type: "Int!" }, after: { type: "String" }) {
     search(query: $query, type: REPOSITORY, first: $first, after: $after)
       @connection(key: "Index_Fragment_search") {
       edges {
-        node {
-          ... on Repository {
-            id
-            name
-            description
-            stargazerCount
-            viewerHasStarred
-            url
-          }
-        }
         cursor
+        ...RepositoryCard_Fragment
       }
     }
   }
@@ -42,7 +33,7 @@ let make = (~query) => {
           {edges
           ->Array.map(edge => {
             switch edge {
-            | Some(edge) => <Repository key={edge.cursor} repoInfo={edge} />
+            | Some(edge) => <RepositoryCard key={edge.cursor} query={edge.fragmentRefs} />
             | None => <div> {React.string("Repository Not found")} </div>
             }
           })

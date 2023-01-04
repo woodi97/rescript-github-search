@@ -27,7 +27,7 @@ let make = (~viewerHasStarred, ~stargazerCount, ~id) => {
   let (addStarMutate, isAddStarMutating) = AddStarCount.use()
   let (removeStarMutate, isRemoveStarMutating) = RemoveStarCount.use()
 
-  let handleStarClick = (_, ~id, ~viewerHasStarred) => {
+  let handleStarClick = _ => {
     if !isAddStarMutating && !isRemoveStarMutating {
       switch viewerHasStarred {
       | true =>
@@ -59,7 +59,7 @@ let make = (~viewerHasStarred, ~stargazerCount, ~id) => {
     disabled={isAddStarMutating || isRemoveStarMutating}
     className={viewerHasStarred ? "bg-gray-200" : "bg-white"}
     size={Button.Small}
-    onClick={handleStarClick(~id, ~viewerHasStarred)}>
+    onClick={handleStarClick}>
     <span className="flex items-center space-x-2 pointer-events-none">
       <IconStar width="20" height="20" fill="yellow" />
       <p> {stargazerCount->Int.toString->React.string} </p>
