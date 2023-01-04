@@ -1,130 +1,51 @@
 module Query = %relay(`
   query Index_Query($query: String!, $first: Int!, $after: String) {
-    ...Index_Fragment @arguments(first: $first, after: $after)
+    ...RepositoriesView_Fragment @arguments(first: $first, after: $after)
   }
 `)
-
-module Fragment = %relay(`
-  fragment Index_Fragment on Query
-  @refetchable(queryName: "Index_Fragment_Query")
-  @argumentDefinitions(first: { type: "Int!" }, after: { type: "String" }) {
-    search(query: $query, type: REPOSITORY, first: $first, after: $after)
-      @connection(key: "Index_Fragment_search") {
-      __id
-      edges {
-        node {
-          ... on Repository {
-            id
-            name
-            description
-            stargazerCount
-            viewerHasStarred
-            url
-          }
-        }
-        cursor
-      }
-    }
-  }
-`)
-
-module RepositoriesInfo = {
-  @react.component
-  let make = (~query) => {
-    let {data: {search}, hasNext, loadNext} = query->Fragment.usePagination
-    let {edges, __id} = search
-
-    let loadMore = _ => {
-      if hasNext {
-        loadNext(~count=5, ())->ignore
-      }
-    }
-
-    <div className="w-full max-w-4xl">
-      {switch edges {
-      | Some(edges) =>
-        <div>
-          {edges
-          ->Array.map(edge => {
-            switch edge {
-            | Some(edge) => <SingleRepo key={edge.cursor} repoInfo={edge} />
-            | None => <div> {React.string("None")} </div>
-            }
-          })
-          ->React.array}
-        </div>
-      | None => <div> {React.string("None")} </div>
-      }}
-      {hasNext
-        ? <Button onClick={_ => loadMore()}> {"click me"->React.string} </Button>
-        : <div> {"no more data"->React.string} </div>}
-    </div>
-  }
-}
 
 module Container = {
   @react.component
-  let make = () => {
-    let timeoutRef = React.useRef(None)
-    let (search, setSearch) = React.Uncurried.useState(_ => "green-labs")
-    let (query, setQuery) = React.Uncurried.useState(_ => search)
+  let make = (~searchText) => {
+    let router = Next.Router.useRouter()
 
-    let {fragmentRefs} = Query.use(~variables=Query.makeVariables(~query={query}, ~first=5, ()), ())
+    let {fragmentRefs} = Query.use(
+      ~variables=Query.makeVariables(~query=searchText, ~first=Env.defaultPagination, ()),
+      (),
+    )
 
-    let handleOnChange = e => {
-      let value = (e->ReactEvent.Synthetic.target)["value"]
-      setSearch(._ => value)
-
-      let _ = switch timeoutRef.current {
-      | None => None
-      | Some(ref) => {
-          ref->Js.Global.clearTimeout
-          None
-        }
-      }
-
-      timeoutRef.current = Some(Js.Global.setTimeout(() => {
-          setQuery(._ => value)
-        }, 300))
+    let handleSubmit = e => {
+      e->ReactEvent.Synthetic.preventDefault
+      let value = (e->ReactEvent.Synthetic.currentTarget)["elements"]["search"]["value"]
+      router->Next.Router.push(`/?search=${value}`)
     }
+
     <PageLayout>
-      <div className="py-2">
-        <Input name="search-box" fullWidth={true} value={search} onChange={handleOnChange} />
-        <RepositoriesInfo query={fragmentRefs} />
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="flex">
+          <Input type_="text" fullWidth={true} name="search" />
+          <Button size={Button.Small} type_="submit"> {React.string("Search")} </Button>
+        </div>
+      </form>
+      <RepositoriesView query={fragmentRefs} />
     </PageLayout>
   }
 }
 
-let default = () => {
-  let fallback =
-    <div className="fixed w-full h-full flex justify-center items-center">
-      <Spinner width="60" height="60" />
-    </div>
+type props = {searchText: string}
 
-  <React.Suspense fallback={fallback}> <Container /> </React.Suspense>
+let default = props => {
+  <React.Suspense fallback={<Spinner position=Spinner.Center width="60" height="60" />}>
+    <Container searchText={props.searchText} />
+  </React.Suspense>
 }
 
-// getServersideProps에서
-// Query에 Fragment가 포함된 경우
-// 결과값을 받아오지 못함(Serializable Object가 아니라서 불가능)
-// 따라서 일단 CSR에서 Query를 실행하고
-// Pagination을 위한 fragment Ref를 넘겨줌
+// 1. Form 기반 검색어 검색으로 바꾸기
+// 2. Mutation시 initial state를 useState에 넣지 않고 기능 구현하기
+// 3. preventDefault, stopPropagation 안쓰고 Update 버튼 만들기
+// 4. getServerside 함수에 URL 기반 검색어 저장 기능 만들기
 
-// => FragmentRef 부분이 문제인 것 같다
-// Fragment가 포함되지 않은 Query는 SSR에서 실행 가능
-
-// let getServerSideProps = _ctx => {
-//   Repositories.Query.fetchPromised(
-//     ~environment=RelayEnv.environment,
-//     ~variables={
-//       login: "green-labs",
-//       first: 5,
-//       after: None,
-//     },
-//     (),
-//   )->Js.Promise.then_(data => {
-//     Js.log(data)
-//     Js.Promise.resolve({"props": {"data": 1}})
-//   }, _)
-// }
+let getServerSideProps = (ctx: Next.GetServerSideProps.context<props, _, _>) => {
+  let initialSearchInput = ctx.query->Js.Dict.get("search")->Option.getWithDefault("")
+  Js.Promise.resolve({"props": {searchText: initialSearchInput}})
+}
