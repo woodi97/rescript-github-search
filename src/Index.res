@@ -27,7 +27,6 @@ module Fragment = %relay(`
     }
   }
 `)
-
 module RepositoriesInfo = {
   @react.component
   let make = (~query) => {
@@ -40,24 +39,23 @@ module RepositoriesInfo = {
       }
     }
 
-    <div className="w-full max-w-4xl">
+    <div className="w-full max-w-4xl divide-y-2">
       {switch edges {
-      | Some(edges) =>
-        <div>
+      | Some(edges) => <>
           {edges
           ->Array.map(edge => {
             switch edge {
-            | Some(edge) => <SingleRepo key={edge.cursor} repoInfo={edge} />
+            | Some(edge) => <Repository key={edge.cursor} repoInfo={edge} />
             | None => <div> {React.string("None")} </div>
             }
           })
           ->React.array}
-        </div>
-      | None => <div> {React.string("None")} </div>
+        </>
+      | None => <> {React.string("None")} </>
       }}
       {hasNext
         ? <Button onClick={_ => loadMore()}> {"click me"->React.string} </Button>
-        : <div> {"no more data"->React.string} </div>}
+        : React.null}
     </div>
   }
 }
@@ -66,10 +64,13 @@ module Container = {
   @react.component
   let make = () => {
     let timeoutRef = React.useRef(None)
-    let (search, setSearch) = React.Uncurried.useState(_ => "green-labs")
-    let (query, setQuery) = React.Uncurried.useState(_ => search)
+    let (search, setSearch) = React.Uncurried.useState(_ => Env.defaultSearchText)
+    let (query, setQuery) = React.Uncurried.useState(_ => Env.defaultSearchText)
 
-    let {fragmentRefs} = Query.use(~variables=Query.makeVariables(~query={query}, ~first=5, ()), ())
+    let {fragmentRefs} = Query.use(
+      ~variables=Query.makeVariables(~query={query}, ~first=Env.defaultPagination, ()),
+      (),
+    )
 
     let handleOnChange = e => {
       let value = (e->ReactEvent.Synthetic.target)["value"]
@@ -98,7 +99,7 @@ module Container = {
 
 let default = () => {
   let fallback =
-    <div className="fixed w-full h-full flex justify-center items-center">
+    <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
       <Spinner width="60" height="60" />
     </div>
 
