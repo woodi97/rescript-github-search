@@ -1,31 +1,23 @@
 module Query = %relay(`
   query Index_Query($query: String!, $first: Int!, $after: String) {
-    ...Repositories_Fragment @arguments(first: $first, after: $after)
+    ...RepositoriesView_Fragment @arguments(first: $first, after: $after)
   }
 `)
 
 module Container = {
   @react.component
   let make = (~searchText) => {
-    // let router = Next.Router.useRouter()
-
-    let (test, setTest) = React.Uncurried.useState(_ => "abc")
+    let router = Next.Router.useRouter()
 
     let {fragmentRefs} = Query.use(
-      ~variables=Query.makeVariables(~query={test}, ~first=Env.defaultPagination, ()),
+      ~variables=Query.makeVariables(~query=searchText, ~first=Env.defaultPagination, ()),
       (),
     )
 
     let handleSubmit = e => {
       e->ReactEvent.Synthetic.preventDefault
-      let input = (e->ReactEvent.Synthetic.target)["0"]["value"]
-
-      setTest(._ => input)
-
-      // let newQuery = router.query
-      // newQuery->Js.Dict.set("search", input)
-
-      // router->Next.Router.replaceObj({pathname: "/", query: newQuery})
+      let value = (e->ReactEvent.Synthetic.currentTarget)["elements"]["search"]["value"]
+      router->Next.Router.push(`/?search=${value}`)
     }
 
     <PageLayout>
@@ -35,7 +27,7 @@ module Container = {
           <Button size={Button.Small} type_="submit"> {React.string("Search")} </Button>
         </div>
       </form>
-      <Repositories query={fragmentRefs} />
+      <RepositoriesView query={fragmentRefs} />
     </PageLayout>
   }
 }

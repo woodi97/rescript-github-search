@@ -5,6 +5,7 @@
     "@rescript/react", 
     "rescript-relay", 
     "bs-fetch", 
+    "rescript-webapi",
     "rescript-classnames",
     "bs-css",
     "bs-css-emotion"
@@ -21,6 +22,10 @@
   ],
   "namespace":false,
   "suffix": ".mjs",
+  "warnings": {
+    "error": true,
+    "number": "-48"
+  },
   "bsc-flags": [
     "-open Belt",
     "-open Cx"
