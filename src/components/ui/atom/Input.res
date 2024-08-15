@@ -9,7 +9,18 @@ let selectSize = size => {
 }
 
 @react.component
-let make = (~className=?, ~fullWidth=?, ~size=?, ~disabled=?, ~value=?, ~onChange=?, ~name) => {
+let make = (
+  ~type_=?,
+  ~className=?,
+  ~fullWidth=?,
+  ~size=?,
+  ~disabled=?,
+  ~value=?,
+  ~onChange=?,
+  ~onKeyDown=?,
+  ~onKeyPress=?,
+  ~name,
+) => {
   <div
     className={cx([
       className->Option.getWithDefault(""),
@@ -25,9 +36,12 @@ let make = (~className=?, ~fullWidth=?, ~size=?, ~disabled=?, ~value=?, ~onChang
       className={"p-2 w-full h-full no-border-outline"}
       id={name}
       name={name}
+      ?type_
       ?disabled
       ?value
       ?onChange
+      ?onKeyDown
+      ?onKeyPress
     />
   </div>
 }

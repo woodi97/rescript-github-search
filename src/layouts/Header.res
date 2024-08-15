@@ -8,7 +8,6 @@ let make = (~fixed=?, ~children) => {
         "flex justify-between items-center align-middle",
         "font-bold",
         fixed->Option.getWithDefault(false) ? "fixed" : "absolute",
-        "border-b-2 border-gray-200",
       ])}>
       {children}
     </div>

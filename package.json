@@ -23,16 +23,18 @@
     "bs-fetch": "^0.6.2",
     "concurrently": "^7.6.0",
     "next": "12.2.3",
+    "next-images": "^1.8.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.41.3",
     "react-relay": "^14.1.0",
     "relay-runtime": "^14.1.0",
     "rescript-classnames": "^6.0.0",
-    "rescript-relay": "^1.0.4"
+    "rescript-relay": "^1.0.4",
+    "rescript-webapi": "^0.7.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
-    "next-compose-plugins": "^2.2.1",
     "next-transpile-modules": "^10.0.0",
     "postcss": "^8.4.20",
     "rescript": "^9.1.4",

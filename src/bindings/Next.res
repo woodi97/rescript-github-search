@@ -113,11 +113,23 @@ module Router = {
 
   @send external push: (router, string) => unit = "push"
   @send external pushObj: (router, pathObj) => unit = "push"
+  @send
+  external pushWithOption: (router, pathObj, option<string>, ~options: {..}) => unit = "push"
+  @send
+  external replaceWithOption: (router, pathObj, option<string>, ~options: {..}) => unit = "replace"
 
   @module("next/router") external useRouter: unit => router = "useRouter"
 
   @send external replace: (router, string) => unit = "replace"
   @send external replaceObj: (router, pathObj) => unit = "replace"
+
+  let replaceShallow = (router, pathObj) => {
+    replaceWithOption(router, pathObj, None, ~options={"shallow": true})
+  }
+
+  let pushShallow = (router, pathObj) => {
+    pushWithOption(router, pathObj, None, ~options={"shallow": true})
+  }
 }
 
 module Head = {
