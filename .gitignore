@@ -42,3 +42,6 @@ styles/.tailwind.dev.css
 
 *.mjs
 *.bs.js
+
+## production css
+*.production.css

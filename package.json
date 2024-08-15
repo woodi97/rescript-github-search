@@ -12,8 +12,8 @@
     "res:clean": "rescript clean -with-deps",
     "relay": "rescript-relay-compiler",
     "relay:watch": "rescript-relay-compiler --watch",
-    "twc:dev": "tailwindcss -i ./src/styles/globals.css -o ./src/styles/output.css --watch",
-    "twc:build": "tailwindcss -i ./src/styles/globals.css -o ./src/styles/output.css --minify"
+    "twc:dev": "tailwindcss -i ./src/styles/globals.css -o ./src/styles/main.production.css --watch",
+    "twc:build": "tailwindcss -i ./src/styles/globals.css -o ./src/styles/main.production.css --minify"
   },
   "dependencies": {
     "@next/font": "13.1.1",
