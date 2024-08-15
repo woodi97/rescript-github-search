@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+@layer base {
+  h1 {
+    @apply text-2xl md:text-3xl font-bold;
+  }
+
+  h2 {
+    @apply text-xl md:text-2xl font-bold;
+  }
+
+  h3 {
+    @apply text-lg md:text-xl font-bold;
+  }
+
+  h4 {
+    @apply text-base md:text-lg;
+  }
+
+  h5 {
+    @apply text-sm md:text-base;
+  }
+
+  h6 {
+    @apply text-xs md:text-sm;
+  }
+
+  p {
+    @apply text-base md:text-lg;
+  }
+}
+
+@layer components {
+  .h1 {
+    @apply text-2xl md:text-3xl font-bold;
+  }
+
+  .h2 {
+    @apply text-xl md:text-2xl font-bold;
+  }
+
+  .h3 {
+    @apply text-lg md:text-xl font-bold;
+  }
+
+  .h4 {
+    @apply text-base md:text-lg;
+  }
+
+  .h5 {
+    @apply text-sm md:text-base;
+  }
+
+  .h6 {
+    @apply text-xs md:text-sm;
+  }
+
+  .p {
+    @apply text-base md:text-lg;
+  }
+
+  .translate-center-x {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .translate-center-y {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .translate-center-xy {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .hide-text-overflow {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .text-shadow-md {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 0 15px 30px rgba(0, 0, 0, 0.11), 0 5px 15px rgba(0, 0, 0, 0.08);
+  }
+
+  .text-shadow-none {
+    text-shadow: none;
+  }
+
+  .no-border-outline {
+    @apply border-none outline-none focus:border-none focus:outline-none;
+  }
+}
+
+html * {
+  box-sizing: border-box;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  font-family: Pretendard, sans-serif;
+}
+
+html * ::-webkit-scrollbar {
+  display: none;
+}
+
+*,
+*:before,
+*:after {
+  color: inherit;
+  box-sizing: inherit;
+}
+
+/* for transition */
+body {
+  transition: all 0.4s linear;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* https://stackoverflow.com/questions/61083813/how-to-avoid-internal-autofill-selected-style-to-be-applied */
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition: background-color 600000s 0s, color 600000s 0s;
+}
