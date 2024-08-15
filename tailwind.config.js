@@ -6,7 +6,7 @@ const colors = require('tailwindcss/colors');
 
 module.exports = {
   mod: 'jit',
-  content: ['./src/**/*.{js,ts,jsx,tsx}'],
+  content: ['./src/**/*.{js,ts,jsx,tsx,res}'],
   theme: {
     screens: {
       sm: '640px',
