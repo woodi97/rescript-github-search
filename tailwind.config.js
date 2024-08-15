@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('tailwindcss').Config} */
 // generate custom color using https://tailwindcolorgenerator.com/
-const appConfig = require('./src/core/config/appConfig');
+const appConfig = require('./src/constants/appConfig');
 const colors = require('tailwindcss/colors');
 
 module.exports = {
